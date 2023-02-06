@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DBFieldsType, DBInterface } from './db.interface';
+import { DBInterface } from './db.interface';
 
 @Injectable()
 export class DBService {
@@ -36,7 +36,7 @@ export class DBService {
     return changedEntity;
   }
 
-  async delete(dbField: DBFieldsType, id: string) {
+  async delete(dbField: keyof DBInterface, id: string) {
     await this.findOne(dbField, id);
 
     this.db[dbField] = this.db[dbField].filter((entity) => entity.id !== id);
