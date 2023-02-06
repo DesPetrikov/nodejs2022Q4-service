@@ -19,17 +19,17 @@ import { UsersService } from './users.service';
 
 @Controller('user')
 export class UsersController {
-  constructor(private userService: UsersService) {}
+  constructor(private usersService: UsersService) {}
 
   @Get()
   async getAll(): Promise<User[]> {
-    return await this.userService.getAllUsers();
+    return (await this.usersService.getAllUsers()) as User[];
   }
 
   @Get(':id')
   async getOne(@Param('id') id: string): Promise<User> {
     if (checkIsIdValid(id)) {
-      return await this.userService.getOneUser(id);
+      return await this.usersService.getOneUser(id);
     }
   }
 
@@ -37,7 +37,7 @@ export class UsersController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() reqBody: CreateUserDTO): Promise<User> {
-    return await this.userService.createUser(reqBody);
+    return await this.usersService.createUser(reqBody);
   }
 
   @UsePipes(new ValidationPipe())
@@ -47,7 +47,7 @@ export class UsersController {
     @Body() reqBody: UpdatePassDTO,
   ): Promise<User> {
     if (checkIsIdValid(id)) {
-      return this.userService.updateUser(id, reqBody);
+      return this.usersService.updateUser(id, reqBody);
     }
   }
 
@@ -55,7 +55,7 @@ export class UsersController {
   @HttpCode(204)
   async delete(@Param('id') id: string): Promise<void> {
     if (checkIsIdValid(id)) {
-      await this.userService.deleteUser(id);
+      await this.usersService.deleteUser(id);
     }
   }
 }

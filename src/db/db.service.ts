@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DBInterface } from './db.interface';
+import { DBFieldsType, DBInterface } from './db.interface';
 
 @Injectable()
 export class DBService {
   private db: DBInterface = {
     users: [],
+    // artists: [],
   };
 
   async create(dbField: keyof DBInterface, entity: any) {
@@ -35,20 +36,9 @@ export class DBService {
     return changedEntity;
   }
 
-  async delete(dbField: keyof DBInterface, id: string) {
+  async delete(dbField: DBFieldsType, id: string) {
     await this.findOne(dbField, id);
 
     this.db[dbField] = this.db[dbField].filter((entity) => entity.id !== id);
   }
-
-  // async findManyByIds(ids: string[]) {
-  //   const entities = [];
-
-  //   ids.forEach((id) => {
-  //     const entity = this.list.find((entity) => entity.id === id);
-  //     entities.push(entity);
-  //   });
-
-  //   return entities;
-  // }
 }
